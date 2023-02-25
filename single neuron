@@ -1,0 +1,61 @@
+// Define a single-compartment model with passive membrane properties
+create soma
+soma {
+    // Set the membrane capacitance, resistance, and resting potential
+    cm = 1 // membrane capacitance (in microfarads per square cm)
+    Ra = 100 // axial resistance (in ohms)
+    insert pas // insert passive membrane properties
+    e_pas = -70 // resting membrane potential (in millivolts)
+}
+
+// Define the ion channels
+create channels
+channels {
+    // Insert Kv channel
+    insert kv
+    gbar_kv = 0.01 // conductance density (in siemens per square cm)
+    
+    // Insert KCa channel
+    insert kca
+    gbar_kca = 0.005 // conductance density (in siemens per square cm)
+    
+    // Insert HCN channel
+    insert hcn
+    gbar_hcn = 0.0005 // conductance density (in siemens per square cm)
+    
+    // Insert NMDA receptor
+    insert nmda
+    gbar_nmda = 0.001 // conductance density (in siemens per square cm)
+    
+    // Insert AMPA receptor
+    insert ampa
+    gbar_ampa = 0.001 // conductance density (in siemens per square cm)
+    
+    // Insert kainate receptor
+    insert kainate
+    gbar_kainate = 0.001 // conductance density (in siemens per square cm)
+    
+    // Insert GABA-A receptor
+    insert gabaa
+    gbar_gabaa = 0.0005 // conductance density (in siemens per square cm)
+    
+    // Insert glycine receptor
+    insert glycine
+    gbar_glycine = 0.0005 // conductance density (in siemens per square cm)
+}
+
+// Connect the channels to the soma
+connect channels(0.5), soma
+
+// Define a current clamp input
+create stim
+stim = new IClamp(0.5)
+stim.del = 100 // delay before stimulation starts (in milliseconds)
+stim.dur = 500 // duration of stimulation (in milliseconds)
+stim.amp = 0.1 // amplitude of current stimulation (in nanoamps)
+
+// Define the simulation and run it
+dt = 0.025 // time step (in milliseconds)
+tstop = 1000 // duration of simulation (in milliseconds)
+v_init = -70 // initial membrane potential (in millivolts)
+run()

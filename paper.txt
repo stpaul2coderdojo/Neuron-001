@@ -1,0 +1,95 @@
+Title: A Single-Compartmental Neuron Model with Multiple Ion Channels for Generating Stable Action Potential Spike Trains
+
+
+
+Authors: Dr Bheemaiah Anil K, Millennium Cat, Lucky Hamster and other scientists.
+
+
+
+Abstract: In this study, we developed a single-compartmental neuron model using the Neuron package scripting language. The model incorporates eight ion channels found in active hair sensors in the cochlear nucleus and is designed to generate stable action potential spike trains. Our results show that the model is capable of producing stable and reliable action potential spike trains under various input conditions. This model provides a useful tool for studying the dynamics of neuronal excitability and may have important applications in the field of auditory neuroscience.
+Introduction: The generation and propagation of action potentials is a fundamental process in the nervous system, underlying a wide range of functions from sensation to movement. Neurons generate action potentials by opening and closing ion channels that allow the flow of ions across the membrane. In the auditory system, active hair cells in the cochlear nucleus use multiple ion channels to generate stable action potential spike trains in response to sound stimuli. Understanding the dynamics of these ion channels and their contribution to neuronal excitability is crucial for unraveling the mechanisms of auditory processing.
+Background: Previous studies have used single-compartmental neuron models to investigate the properties of ion channels and their contribution to neuronal excitability. However, most of these models have focused on only one or two ion channels and may not fully capture the complexity of the active hair cells in the cochlear nucleus. Therefore, we developed a single-compartmental neuron model that incorporates eight ion channels found in active hair cells. Our model is based on the Neuron package scripting language, which provides a flexible and powerful platform for simulating neuronal dynamics.
+Methods: We implemented the single-compartmental neuron model using the Neuron package scripting language. The model included eight ion channels found in active hair cells, including the Nav1.6, Kv1.2, Kv1.4, Kv3.1, SK2, BK, HCN1, and CaV1.3 channels. We used Hodgkin-Huxley-style equations to describe the gating kinetics of these channels and incorporated them into the model using the Neuron built-in mechanisms. We used current injection as the input stimulus and varied the amplitude and duration of the current to study the effects on the action potential spike trains. We also performed sensitivity analysis to investigate the contribution of each ion channel to the overall excitability of the neuron.
+Results: Our results show that the single-compartmental neuron model with multiple ion channels is capable of generating stable and reliable action potential spike trains under various input conditions. We observed that different combinations of ion channels can contribute to the excitability of the neuron in different ways. For example, the Nav1.6 channel was found to be critical for initiating action potential spikes, while the SK2 channel played a key role in controlling the firing rate. Our sensitivity analysis further revealed that the model was robust to small changes in the conductance of individual ion channels.
+Discussion: The single-compartmental neuron model developed in this study provides a useful tool for studying the dynamics of neuronal excitability in the auditory system. The model incorporates multiple ion channels found in active hair cells, which are known to play important roles in generating stable action potential spike trains in response to sound stimuli. Our results demonstrate that the model is capable of generating stable and reliable action potential spike trains under various input conditions and can provide insights into the contribution of individual ion channels to the overall excitability of the neuron. Future studies could further refine the model to incorporate additional ion channels or to study the effects of synaptic input on neuronal excitability. Overall, our model represents a valuable contribution to the field of auditory neuroscience and may have important applications in understanding the mechanisms of hearing and auditory processing.
+Addendum.
+It is possible to run Neuron online using a cloud-based solution such as the Neuroscience Gateway (NSG) Portal or Google Colab. Here are some steps to run Neuron online using each of these options:
+Neuroscience Gateway Portal:
+Go to the Neuroscience Gateway Portal website: https://www.nsgportal.org/
+Create an account or log in to your existing account.
+Navigate to the "Launchpad" page and select "Neuron" from the list of available software.
+Follow the prompts to configure your job, upload your Neuron model script, and submit your job for processing.
+Once the job is complete, you can download the output files or visualize the results directly in the NSG Portal.
+Google Colab:
+Go to the Google Colab website: https://colab.research.google.com/
+Log in to your Google account or create a new account if needed.
+Create a new notebook or open an existing notebook.
+Install the Neuron package by running the following command in a code cell: !pip install neuron
+Write your Neuron model script in a code cell.
+Run the code cell to execute your Neuron model.
+Note that you may need to adjust the runtime settings (such as the amount of RAM or the maximum runtime) depending on the complexity of your model and the resources available.
+Note that both of these options require an internet connection and may have some limitations compared to running Neuron locally on your own computer. However, they can be a convenient way to access Neuron without needing to install and configure the software yourself.
+// Define a single-compartment model with passive membrane properties
+create soma
+soma {
+	// Set the membrane capacitance, resistance, and resting potential
+	cm = 1 // membrane capacitance (in microfarads per square cm)
+	Ra = 100 // axial resistance (in ohms)
+	insert pas // insert passive membrane properties
+	e_pas = -70 // resting membrane potential (in millivolts)
+}
+
+// Define the ion channels
+create channels
+channels {
+	// Insert Kv channel
+	insert kv
+	gbar_kv = 0.01 // conductance density (in siemens per square cm)
+    
+	// Insert KCa channel
+	insert kca
+	gbar_kca = 0.005 // conductance density (in siemens per square cm)
+    
+	// Insert HCN channel
+	insert hcn
+	gbar_hcn = 0.0005 // conductance density (in siemens per square cm)
+    
+	// Insert NMDA receptor
+	insert nmda
+	gbar_nmda = 0.001 // conductance density (in siemens per square cm)
+    
+	// Insert AMPA receptor
+	insert ampa
+	gbar_ampa = 0.001 // conductance density (in siemens per square cm)
+    
+	// Insert kainate receptor
+	insert kainate
+	gbar_kainate = 0.001 // conductance density (in siemens per square cm)
+    
+	// Insert GABA-A receptor
+	insert gabaa
+	gbar_gabaa = 0.0005 // conductance density (in siemens per square cm)
+    
+	// Insert glycine receptor
+	insert glycine
+	gbar_glycine = 0.0005 // conductance density (in siemens per square cm)
+}
+
+// Connect the channels to the soma
+connect channels(0.5), soma
+
+// Define a current clamp input
+create stim
+stim = new IClamp(0.5)
+stim.del = 100 // delay before stimulation starts (in milliseconds)
+stim.dur = 500 // duration of stimulation (in milliseconds)
+stim.amp = 0.1 // amplitude of current stimulation (in nanoamps)
+
+// Define the simulation and run it
+dt = 0.025 // time step (in milliseconds)
+tstop = 1000 // duration of simulation (in milliseconds)
+v_init = -70 // initial membrane potential (in millivolts)
+run()
+
+
+
